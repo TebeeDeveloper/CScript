@@ -1,16 +1,16 @@
-#ifndef BeeScript
-#define BeeScript
+#ifndef CScript
+#define CScript
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef BEE_LEX_H
-    #include "bee_lex.h"
+#ifndef CS_LEX_H
+    #include "cs_lex.h"
 #endif
 
-#ifndef BEE_EMITTER_H
-    #include "bee_emitter.h"
+#ifndef CS_EMITTER_H
+    #include "cs_emitter.h"
 #endif
 
 char* breadfile(const char* file_name) {

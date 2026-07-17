@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "bee_lex.h"
+#include "cs_lex.h"
 
 void trans_comment(char* line) {
     char* p = strstr(line, "--");
