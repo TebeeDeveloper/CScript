@@ -40,13 +40,12 @@ char* breadfile(const char* file_name) {
 }
 
 int main(int argc, char* argv[]) {
-    // Cách dùng đầy đủ: bee <tệp_nhập.bee> <tệp_đầu_ra> [cờ_biên_dịch_tùy_chọn]
     if (argc < 3) {
-        printf("Cách dùng: %s input.bee output [cờ...]\n", argv[0]);
-        printf("Ví dụ:\n");
-        printf("  %s main.bee app               → Tạo tệp thực thi app\n", argv[0]);
-        printf("  %s main.bee libm.so -shared   → Tạo thư viện động libm.so\n", argv[0]);
-        printf("  %s main.bee calc -lm -lpthread → Liên kết thư viện toán + luồng\n", argv[0]);
+        printf("How to use CScript: %s input.csr output [flags...]\n", argv[0]);
+        printf("Example:\n");
+        printf("  %s main.csr app\n", argv[0]);
+        printf("  %s main.csr libm.so -shared\n", argv[0]);
+        printf("  %s main.csr calc -lm -lpthread\n", argv[0]);
         return 1;
     }
 
@@ -63,14 +62,12 @@ int main(int argc, char* argv[]) {
     }
 
 
-    // 1. Đọc tệp BeeScript
     char* bee_code = breadfile(input_path);
     if (!bee_code) {
-        printf("❌ Lỗi: Không mở hoặc đọc được tệp '%s'\n", input_path);
+        printf("Error: Cannot open file '%s'\n", input_path);
         return 2;
     }
 
-    // 2. Dịch sang mã C
     char c_code[65536] = {0};
     if (lex(bee_code, c_code, input_path) != 0) {
         free(bee_code);
@@ -78,15 +75,14 @@ int main(int argc, char* argv[]) {
     }
     free(bee_code);
 
-    // 3. Biên dịch với cờ người dùng cung cấp
     char* loi = compile_c(c_code, output_path, NULL, (flags_buf[0] != '\0') ? flags_buf : NULL, 1);
     if (loi) {
-        printf("❌ Lỗi biên dịch:\n%s\n", loi);
+        printf("Compile Error:\n%s\n", loi);
         free(loi);
         return 4;
     }
 
-    printf("✅ Hoàn tất! Tạo thành công: '%s'\n", output_path);
+    printf("Successful: '%s'\n", output_path);
     return 0;
 }
 
