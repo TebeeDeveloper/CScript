@@ -150,7 +150,6 @@ int lex(char* code, char* output, const char* filename) {
 
 
     snprintf(output, BUF_SIZE, "%s%s%s", lib_headers, sharpline, buf);
-    printf("%s", output);
 
     return 0;
 }

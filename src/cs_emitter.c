@@ -55,7 +55,7 @@ char* compile_c(const char* c_code, const char* out_name, const char* cc, const 
         snprintf(cmd, sizeof(cmd), "%s %s -xc - -o \"%s\" 2>&1", cc_path, use_flags, out_name);
     }
 
-    if (verbose) printf("Lệnh biên dịch: %s\n", cmd);
+    if (verbose) printf("Compile command: %s\n", cmd);
 
     
     FILE* proc = popen(cmd, "w+");
