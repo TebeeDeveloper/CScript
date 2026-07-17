@@ -50,17 +50,38 @@ char* trans_main(char* line) {
 char* trans_semicolon(char* line) {
     if (!line || !*line) return strdup("");
 
+    char* p = line;
+    // Bỏ qua khoảng trắng/tab ở đầu dòng trước khi so sánh
+    while (*p == ' ' || *p == '\t') p++;
+
+    // ✅ Sửa logic: nếu KHỚP với từ khóa → giữ nguyên
+    if (
+        !strncmp(p, "#include", 8) ||
+        !strncmp(p, "if", 2) ||
+        !strncmp(p, "else", 4) ||
+        !strncmp(p, "for", 3) ||
+        !strncmp(p, "do", 2)
+    ) {
+        return strdup(line);
+    }
+
+    // Tìm đến cuối nội dung dòng
     char* end = line;
     while (*end && *end != '\n' && *end != '\r') end++;
 
+    // Lùi lại bỏ qua khoảng trắng/tab cuối dòng
     while (end > line && (*(end - 1) == ' ' || *(end - 1) == '\t')) {
         end--;
     }
 
-    if ((end > line && *(end - 1) == ';') || (end > line && *(end - 1) == '{')) {
+    // ✅ Giữ nguyên nếu kết thúc bằng ; / { / } → không thêm dấu thừa
+    if ((end > line && *(end - 1) == ';') ||
+        (end > line && *(end - 1) == '{') ||
+        (end > line && *(end - 1) == '}')) {
         return strdup(line);
     }
 
+    // Các trường hợp còn lại → thêm ;
     size_t len = end - line;
     char* res = malloc(len + 2);
     if (!res) return NULL;
@@ -69,6 +90,7 @@ char* trans_semicolon(char* line) {
     res[len + 1] = '\0';
     return res;
 }
+
 
 
 
