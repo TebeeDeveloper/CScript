@@ -108,7 +108,8 @@ int lex(char* code, char* output, const char* filename) {
         "#include <stdarg.h>\n"
         "#include <stddef.h>\n"
         "#include <ctype.h>\n"
-        "#include <math.h>\n\n";
+        "#include <math.h>\n";
+        "#include <time.h>\n\n";
 
     char sharpline[512];
     snprintf(sharpline, sizeof(sharpline), "#line 1 \"%s\"\n\n", filename);
