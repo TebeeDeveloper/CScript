@@ -5,8 +5,9 @@
 
 #include "cs_lex.h"
 
+
 void trans_comment(char* line) {
-    char* p = strstr(line, "--");
+    char* p = strstr(line, "//");
     if (p) *p = '\0';
 
     int len = strlen(line);
@@ -49,34 +50,27 @@ char* trans_main(char* line) {
 char* trans_semicolon(char* line) {
     if (!line || !*line) return strdup("");
 
-    char* p = line;
-    while (*p == ' ' || *p == '\t') p++;
-    if (*p == '\0') return strdup("");
+    char* end = line;
+    while (*end && *end != '\n' && *end != '\r') end++;
 
+    while (end > line && (*(end - 1) == ' ' || *(end - 1) == '\t')) {
+        end--;
+    }
 
-    if (*p == '{' || *p == '}' ||
-        strncmp(p, "#include", 8) == 0 ||
-        strncmp(p, "fn ", 3) == 0 ||
-        strncmp(p, "if ", 3) == 0 ||
-        strncmp(p, "else", 4) == 0 ||
-        strncmp(p, "for ", 4) == 0 ||
-        strncmp(p, "while ", 6) == 0 ||
-        strncmp(p, "extern ", 7) == 0) {
+    if ((end > line && *(end - 1) == ';') || (end > line && *(end - 1) == '{')) {
         return strdup(line);
     }
 
-
-    size_t len = strlen(line);
-    if (len > 0 && line[len-1] == ';')
-        return strdup(line);
-
+    size_t len = end - line;
     char* res = malloc(len + 2);
     if (!res) return NULL;
     strncpy(res, line, len);
     res[len] = ';';
-    res[len+1] = '\0';
+    res[len + 1] = '\0';
     return res;
 }
+
+
 
 #define BUF_SIZE 131072
 
